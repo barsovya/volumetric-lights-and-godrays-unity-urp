@@ -148,20 +148,23 @@ namespace Plugins.VolumetricLightScattering.Runtime
                     drawSettings.overrideMaterial = OccludesMaterial;
                     context.DrawRenderers(renderingData.cullResults,
                         ref drawSettings, ref FilteringSettings);
-
-                    Vector3 sunDirectionWorldSpace =
-                        RenderSettings.sun.transform.forward;
-                    Vector3 cameraPositionWorldSpace =
-                        camera.transform.position;
-                    Vector3 sunPositionWorldSpace =
-                        cameraPositionWorldSpace + sunDirectionWorldSpace;
-                    Vector3 sunPositionViewportSpace =
-                        camera.WorldToViewportPoint(sunPositionWorldSpace);
-
-                    RadialBlurMaterial.SetVector(Center, new Vector4(
-                        sunPositionViewportSpace.x, sunPositionViewportSpace.y, 0, 0));
-                    RadialBlurMaterial.SetFloat(Intensity1, Intensity);
-                    RadialBlurMaterial.SetFloat(Width, BlurWidth);
+                    
+                    if (RenderSettings.sun != null)
+                    {
+                        Vector3 sunDirectionWorldSpace =
+                            RenderSettings.sun.transform.forward;
+                        Vector3 cameraPositionWorldSpace =
+                            camera.transform.position;
+                        Vector3 sunPositionWorldSpace =
+                            cameraPositionWorldSpace + sunDirectionWorldSpace;
+                        Vector3 sunPositionViewportSpace =
+                            camera.WorldToViewportPoint(sunPositionWorldSpace);
+    
+                        RadialBlurMaterial.SetVector(Center, new Vector4(
+                            sunPositionViewportSpace.x, sunPositionViewportSpace.y, 0, 0));
+                        RadialBlurMaterial.SetFloat(Intensity1, Intensity);
+                        RadialBlurMaterial.SetFloat(Width, BlurWidth);
+                    }
                 }
 
                 if (DiffuseLighting)
